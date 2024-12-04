@@ -17,7 +17,6 @@
         margin: 20px auto;
         max-width: 1200px;
         border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     .section-title {
         color: #333;
@@ -60,6 +59,14 @@
     .submit-btn:hover {
         background-color: #2980b9;
     }
+    .error-message {
+        color: #dc3545;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        padding: 10px;
+        margin: 10px auto;
+        text-align: center;
+    }
 </style>
 </head>
 <body>
@@ -70,6 +77,11 @@
     <h1 class="section-title">Administrator Portal</h1>
     
     <%
+    String message = request.getParameter("message");
+    if (message != null) {
+        out.println("<div class='error-message'>" + message + "</div>");
+    }
+    
     if (userName != null) {
         NumberFormat currFormat = NumberFormat.getCurrencyInstance();
         
@@ -82,13 +94,7 @@
 
         try (Connection con = DriverManager.getConnection(url, uid, pw)) {
             // First show sales report
-            String salesSql = "SELECT c.customerId, c.firstName, c.lastName, " +
-                            "COUNT(o.orderId) as totalOrders, " +
-                            "SUM(o.totalAmount) as totalSales " +
-                            "FROM customer c " +
-                            "LEFT JOIN ordersummary o ON c.customerId = o.customerId " +
-                            "GROUP BY c.customerId, c.firstName, c.lastName " +
-                            "ORDER BY totalSales DESC";
+            String salesSql = "SELECT c.customerId, c.firstName, c.lastName, COUNT(o.orderId) as totalOrders, SUM(o.totalAmount) as totalSales FROM customer c LEFT JOIN ordersummary o ON c.customerId = o.customerId GROUP BY c.customerId, c.firstName, c.lastName ORDER BY c.customerId ASC";
             
             Statement salesStmt = con.createStatement();
             ResultSet salesResult = salesStmt.executeQuery(salesSql);
@@ -187,6 +193,43 @@
 
             out.println("<tr><td colspan='2' style='text-align:center;'>");
             out.println("<input type='submit' value='Add Product' class='submit-btn'>");
+            out.println("</td></tr>");
+
+            out.println("</form>");
+            out.println("</table>");
+
+            // Add Delete Product Form
+            out.println("<h2 class='section-title'>Delete Product</h2>");
+            out.println("<table class='customer-table'>");
+            out.println("<form method='post' action='deleteProduct.jsp'>");
+            
+            out.println("<tr><th>Select Product:</th><td>");
+            out.println("<select name='productId' required style='width:100%; padding:8px;'>");
+            
+            // Get all products for dropdown
+            Statement prodStmt = con.createStatement();
+            ResultSet products = prodStmt.executeQuery("SELECT productId, productName, categoryName FROM product JOIN category ON product.categoryId = category.categoryId ORDER BY categoryName, productName");
+            
+            String currentCategory = "";
+            while(products.next()) {
+                String categoryName = products.getString("categoryName");
+                if (!categoryName.equals(currentCategory)) {
+                    if (!currentCategory.equals("")) {
+                        out.println("</optgroup>");
+                    }
+                    out.println("<optgroup label='" + categoryName + "'>");
+                    currentCategory = categoryName;
+                }
+                out.println("<option value='" + products.getInt("productId") + "'>" 
+                    + products.getString("productName") + "</option>");
+            }
+            if (!currentCategory.equals("")) {
+                out.println("</optgroup>");
+            }
+            out.println("</select></td></tr>");
+
+            out.println("<tr><td colspan='2' style='text-align:center;'>");
+            out.println("<input type='submit' value='Delete Product' class='submit-btn' style='background-color: #dc3545;' onclick='return confirm(`Are you sure you want to delete this product?`);'>");
             out.println("</td></tr>");
 
             out.println("</form>");
