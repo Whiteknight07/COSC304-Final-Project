@@ -49,6 +49,17 @@
         font-weight: bold;
         background-color: #e6f3ff;
     }
+    .submit-btn {
+        background-color: #3399FF;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .submit-btn:hover {
+        background-color: #2980b9;
+    }
 </style>
 </head>
 <body>
@@ -70,7 +81,14 @@
         }
 
         try (Connection con = DriverManager.getConnection(url, uid, pw)) {
-            String salesSql = "SELECT c.customerId, c.firstName, c.lastName, COUNT(o.orderId) as totalOrders, SUM(o.totalAmount) as totalSales FROM customer c LEFT JOIN ordersummary o ON c.customerId = o.customerId GROUP BY c.customerId, c.firstName, c.lastName ORDER BY c.customerId ASC";
+            // First show sales report
+            String salesSql = "SELECT c.customerId, c.firstName, c.lastName, " +
+                            "COUNT(o.orderId) as totalOrders, " +
+                            "SUM(o.totalAmount) as totalSales " +
+                            "FROM customer c " +
+                            "LEFT JOIN ordersummary o ON c.customerId = o.customerId " +
+                            "GROUP BY c.customerId, c.firstName, c.lastName " +
+                            "ORDER BY totalSales DESC";
             
             Statement salesStmt = con.createStatement();
             ResultSet salesResult = salesStmt.executeQuery(salesSql);
@@ -101,6 +119,7 @@
                 out.println("</tr>");
             }
 
+            // Add total row
             out.println("<tr class='total-row'>");
             out.println("<td colspan='2'><b>TOTAL</b></td>");
             out.println("<td><b>" + totalOrders + "</b></td>");
@@ -108,6 +127,7 @@
             out.println("</tr>");
             out.println("</table>");
 
+            // Then show customer list
             String customerSql = "SELECT customerId, firstName, lastName, email, phonenum, address, city, state, postalCode, country FROM customer ORDER BY customerId";
             Statement custStmt = con.createStatement();
             ResultSet custResult = custStmt.executeQuery(customerSql);
@@ -140,9 +160,43 @@
                 out.println("</tr>");
             }
             out.println("</table>");
+
+            // Add product form section
+            out.println("<h2 class='section-title'>Add New Product</h2>");
+            out.println("<table class='customer-table'>");
+            out.println("<form method='post' action='addProduct.jsp'>");
+            
+            out.println("<tr><th>Product Name:</th>");
+            out.println("<td><input type='text' name='productName' required style='width:100%; padding:8px;'></td></tr>");
+
+            out.println("<tr><th>Price:</th>");
+            out.println("<td><input type='number' name='productPrice' step='0.01' min='0' required style='width:100%; padding:8px;'></td></tr>");
+
+            out.println("<tr><th>Description:</th>");
+            out.println("<td><textarea name='productDesc' required style='width:100%; padding:8px; height:100px;'></textarea></td></tr>");
+
+            out.println("<tr><th>Category:</th><td>");
+            out.println("<select name='categoryId' required style='width:100%; padding:8px;'>");
+            Statement catStmt = con.createStatement();
+            ResultSet categories = catStmt.executeQuery("SELECT categoryId, categoryName FROM category");
+            while(categories.next()) {
+                out.println("<option value='" + categories.getInt("categoryId") + "'>" 
+                    + categories.getString("categoryName") + "</option>");
+            }
+            out.println("</select></td></tr>");
+
+            out.println("<tr><td colspan='2' style='text-align:center;'>");
+            out.println("<input type='submit' value='Add Product' class='submit-btn'>");
+            out.println("</td></tr>");
+
+            out.println("</form>");
+            out.println("</table>");
+
         } catch (SQLException e) {
             out.println("SQLException: " + e);
         }
+    } else {
+        out.println("<h2>Access Denied - Please login with administrator credentials.</h2>");
     }
     %>
 </div>
