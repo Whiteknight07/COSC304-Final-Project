@@ -50,6 +50,7 @@
             <a href="listorder.jsp">Orders</a>
             <a href="showcart.jsp">Cart</a>
             <a href="customer.jsp">Account Page</a>
+            <a href="admin.jsp">Admin Portal</a>
             <a href="logout.jsp">Logout</a>
         </div>
     </div>
