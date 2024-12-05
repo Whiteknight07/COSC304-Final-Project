@@ -51,6 +51,7 @@
 <%@ include file="header.jsp" %>
 
 <%
+// edit done 
     // Check if user is logged in
     if (userName == null || userName.isEmpty()) {
         response.sendRedirect("login.jsp");

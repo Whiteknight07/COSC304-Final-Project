@@ -12,16 +12,28 @@
 <head>
     <title>Ray's Grocery - Product Information</title>
     <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
         .product-info {
             margin: 20px;
-            padding: 15px;
+            padding: 20px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
         }
         .info-row {
             margin: 10px 0;
             display: flex;
             align-items: center;
+        }
+        .info-row:hover {
+            background-color: #f1f1f1;
         }
         .label {
             font-weight: bold;
@@ -34,7 +46,7 @@
         .price {
             color: #28a745;
             font-weight: bold;
-            font-size: 1.2em;
+            font-size: 1.4em;
         }
         .inventory-table {
             margin-top: 20px;
@@ -42,12 +54,15 @@
             border-collapse: collapse;
         }
         .inventory-table th, .inventory-table td {
-            padding: 8px;
+            padding: 12px;
             border: 1px solid #ddd;
             text-align: left;
         }
         .inventory-table th {
-            background-color: #f8f9fa;
+            background-color: #e9ecef;
+        }
+        .inventory-table tr:hover {
+            background-color: #f1f1f1;
         }
         img {
             max-width: 300px;
@@ -57,11 +72,18 @@
             display: none;
         }
         .product-list {
-            margin-top: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .product-list h2 {
             color: #333;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
         }
         .product-list ul {
             list-style: none;
@@ -69,24 +91,35 @@
         }
         .product-list li {
             margin: 10px 0;
-            padding: 10px;
+            padding: 15px;
             border: 1px solid #eee;
-            border-radius: 4px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        .product-list li:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         .product-list a {
             color: #007bff;
             text-decoration: none;
+            display: block;
+            font-size: 16px;
         }
         .product-list a:hover {
-            text-decoration: underline;
+            color: #0056b3;
         }
         .error-message {
-            color: #dc3545;
-            padding: 10px;
-            margin: 10px 0;
+            background-color: #fff;
             border: 1px solid #dc3545;
-            border-radius: 4px;
-            background-color: #f8d7da;
+            border-radius: 6px;
+            color: #dc3545;
+            padding: 15px 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: center;
+            font-size: 16px;
+            box-shadow: 0 2px 4px rgba(220, 53, 69, 0.1);
         }
     </style>
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -102,7 +135,7 @@ String productId = request.getParameter("id");
 if (productId == null || productId.trim().isEmpty()) {
     %>
     <div class="error-message">
-        <p>No product ID specified. Please select a product from the list below:</p>
+        <p>Welcome to our product catalog! Please select a product from the list below to view details.</p>
     </div>
     <div class="product-list">
         <h2>Available Products</h2>
@@ -220,3 +253,4 @@ if (productId == null || productId.trim().isEmpty()) {
 
 </body>
 </html>
+
