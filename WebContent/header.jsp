@@ -1,8 +1,5 @@
 <%
-    String userName = request.getParameter("customerId");
-    if (userName == null) {
-        userName = (String) session.getAttribute("authenticatedUser");
-    }
+    String userName = (String) session.getAttribute("authenticatedUser");
 %>
 
 <style>
@@ -24,6 +21,10 @@
         text-decoration: none;
         font-size: 24px;
     }
+    .nav-links {
+        display: flex;
+        align-items: center;
+    }
     .nav-links a {
         color: #333;
         text-decoration: none;
@@ -32,25 +33,27 @@
     .nav-links a:hover {
         color: #3399FF;
     }
-    .welcome-msg {
-        color: #666;
-    }
 </style>
 
 <div class="header">
     <div class="header-content">
         <a href="index.jsp" class="store-name">Ray's Grocery</a>
-        <span class="welcome-msg">
-            <% if (userName != null && !userName.isEmpty()) { %>
-                Welcome, <%= userName %>!
-            <% } %>
-        </span>
         <div class="nav-links">
             <a href="listprod.jsp">Shop</a>
             <a href="listorder.jsp">Orders</a>
             <a href="showcart.jsp">Cart</a>
-            <a href="customer.jsp">Account Page</a>
-            <a href="logout.jsp">Logout</a>
+            
+            <% if (userName != null && !userName.isEmpty()) { %>
+                <a href="customer.jsp">Account Page</a>
+                <a href="editAccount.jsp">Edit Account</a>
+                <% if (userName.equals("admin")) { %>
+                    <a href="admin.jsp">Admin Portal</a>
+                <% } %>
+                <a href="logout.jsp">Logout</a>
+            <% } else { %>
+                <a href="login.jsp">Login</a>
+                <a href="register.jsp">Register</a>
+            <% } %>
         </div>
     </div>
 </div>
