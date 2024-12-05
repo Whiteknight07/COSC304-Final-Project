@@ -1,8 +1,6 @@
-<%@ page import="java.sql.*" %>
+<%@ page import="java.sql.*, java.util.HashMap, java.util.ArrayList" %>
 <%@ page import="java.text.NumberFormat" %>
-<%@ page import="java.util.HashMap" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.Map" %>
+<%@ page import="java.util.Locale" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
 <%@ include file="jdbc.jsp" %>
 
@@ -53,124 +51,220 @@
 <%@ include file="header.jsp" %>
 
 <%
-    // Get customer id and password
-    String custId = request.getParameter("customerId");
-    String custPass = request.getParameter("password");
-    @SuppressWarnings({"unchecked"})
-    HashMap<String, ArrayList<Object>> productList = (HashMap<String, ArrayList<Object>>) session.getAttribute("productList");
-
-    try {
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-    } catch (java.lang.ClassNotFoundException e) {
-        out.println("ClassNotFoundException: " + e);
+    // Check if user is logged in
+    if (userName == null || userName.isEmpty()) {
+        response.sendRedirect("login.jsp");
+        return;
     }
 
-    try (Connection con = DriverManager.getConnection(url, uid, pw)) {
-        con.setAutoCommit(false);  // Start transaction
-
-        // First check if the input is a numeric customer ID
-        String customerQuery;
-        if (custId != null && custId.matches("\\d+")) {
-            customerQuery = "SELECT customerId, password FROM customer WHERE customerId = ?";
-        } else {
-            customerQuery = "SELECT customerId, password FROM customer WHERE userid = ?";
+    // Validate required fields
+    String[] requiredFields = {"firstName", "lastName", "address", "city", "state", "postalCode", "country", "phone", "paymentMethod"};
+    String[] fieldNames = {"First Name", "Last Name", "Address", "City", "State", "Postal Code", "Country", "Phone", "Payment Method"};
+    
+    for (int i = 0; i < requiredFields.length; i++) {
+        String value = request.getParameter(requiredFields[i]);
+        if (value == null || value.trim().isEmpty()) {
+            session.setAttribute("checkoutMessage", fieldNames[i] + " is required.");
+            response.sendRedirect("checkout.jsp");
+            return;
         }
+    }
 
-        String actualCustomerId = null;
-        try (PreparedStatement pstmt = con.prepareStatement(customerQuery)) {
-            pstmt.setString(1, custId);
-            ResultSet rs = pstmt.executeQuery();
-            
-            if (!rs.next()) {
-                out.println("<h4>Customer does not exist or password is wrong</h4>");
-                return;
-            }
-            
-            String dbPassword = rs.getString("password");
-            if (!dbPassword.equals(custPass)) {
-                out.println("<h4>Incorrect password. Note: Passwords are case-sensitive.</h4>");
-                return;
-            }
-            
-            actualCustomerId = String.valueOf(rs.getInt("customerId"));
-        }
+    // Validate field formats
+    String firstName = request.getParameter("firstName");
+    String lastName = request.getParameter("lastName");
+    String address = request.getParameter("address");
+    String city = request.getParameter("city");
+    String state = request.getParameter("state");
+    String postalCode = request.getParameter("postalCode");
+    String country = request.getParameter("country");
+    String phone = request.getParameter("phone");
+    String paymentMethod = request.getParameter("paymentMethod");
 
-        // Check if shopping cart is empty
-        if (productList == null || productList.isEmpty()) {
-            out.println("<h4>Shopping cart is empty</h4>");
+    // Name validations
+    if (!firstName.matches("[A-Za-z ]{2,40}") || !lastName.matches("[A-Za-z ]{2,40}")) {
+        session.setAttribute("checkoutMessage", "Invalid name format. Please use only letters.");
+        response.sendRedirect("checkout.jsp");
+        return;
+    }
+
+    // Address validation
+    if (address.length() < 5) {
+        session.setAttribute("checkoutMessage", "Address must be at least 5 characters long.");
+        response.sendRedirect("checkout.jsp");
+        return;
+    }
+
+    // City and State validation
+    if (!city.matches("[A-Za-z ]{2,40}") || !state.matches("[A-Za-z ]{2,40}")) {
+        session.setAttribute("checkoutMessage", "Invalid city or state format. Please use only letters.");
+        response.sendRedirect("checkout.jsp");
+        return;
+    }
+
+    // Postal code validation
+    if (!postalCode.matches("[A-Za-z0-9]{5,10}")) {
+        session.setAttribute("checkoutMessage", "Invalid postal code format.");
+        response.sendRedirect("checkout.jsp");
+        return;
+    }
+
+    // Country validation
+    if (!country.matches("[A-Za-z ]{2,40}")) {
+        session.setAttribute("checkoutMessage", "Invalid country format. Please use only letters.");
+        response.sendRedirect("checkout.jsp");
+        return;
+    }
+
+    // Phone validation
+    if (!phone.matches("[0-9-+]{10,15}")) {
+        session.setAttribute("checkoutMessage", "Invalid phone number format.");
+        response.sendRedirect("checkout.jsp");
+        return;
+    }
+
+    // Payment validation
+    if (paymentMethod.equals("credit") || paymentMethod.equals("debit")) {
+        String cardName = request.getParameter("cardName");
+        String cardNumber = request.getParameter("cardNumber");
+        String expiryDate = request.getParameter("expiryDate");
+        String cvv = request.getParameter("cvv");
+
+        if (cardName == null || !cardName.matches("[A-Za-z ]{2,50}")) {
+            session.setAttribute("checkoutMessage", "Invalid card name format.");
+            response.sendRedirect("checkout.jsp");
             return;
         }
 
-        // Insert order summary
-        String sql = "INSERT INTO ordersummary (customerId, orderDate, totalAmount) VALUES (?, GETDATE(), 0)";
-        int orderId;
-        try (PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            pstmt.setString(1, actualCustomerId);
+        if (cardNumber == null || !cardNumber.matches("\\d{16}")) {
+            session.setAttribute("checkoutMessage", "Invalid card number format.");
+            response.sendRedirect("checkout.jsp");
+            return;
+        }
+
+        if (expiryDate == null || !expiryDate.matches("(0[1-9]|1[0-2])/[0-9]{2}")) {
+            session.setAttribute("checkoutMessage", "Invalid expiry date format.");
+            response.sendRedirect("checkout.jsp");
+            return;
+        }
+
+        // Check if card is expired
+        String[] dateParts = expiryDate.split("/");
+        int month = Integer.parseInt(dateParts[0]);
+        int year = Integer.parseInt(dateParts[1]) + 2000;
+        java.util.Calendar expiry = java.util.Calendar.getInstance();
+        expiry.set(year, month - 1, 1);
+        if (expiry.before(java.util.Calendar.getInstance())) {
+            session.setAttribute("checkoutMessage", "Card has expired.");
+            response.sendRedirect("checkout.jsp");
+            return;
+        }
+
+        if (cvv == null || !cvv.matches("\\d{3}")) {
+            session.setAttribute("checkoutMessage", "Invalid CVV format.");
+            response.sendRedirect("checkout.jsp");
+            return;
+        }
+    }
+
+    // Get customer ID
+    String customerId = "";
+    try {
+        getConnection();
+        String sql = "SELECT customerId FROM customer WHERE userid = ?";
+        PreparedStatement pstmt = con.prepareStatement(sql);
+        pstmt.setString(1, userName);
+        ResultSet rs = pstmt.executeQuery();
+        if (rs.next()) {
+            customerId = rs.getString("customerId");
+        }
+    } catch (SQLException ex) {
+        out.println("<h1>Error retrieving customer ID: " + ex.getMessage() + "</h1>");
+        return;
+    } finally {
+        closeConnection();
+    }
+
+    // Get shopping cart
+    @SuppressWarnings({"unchecked"})
+    HashMap<String, ArrayList<Object>> productList = (HashMap<String, ArrayList<Object>>) session.getAttribute("productList");
+
+    if (productList == null || productList.isEmpty()) {
+        out.println("<h1>Your shopping cart is empty!</h1>");
+        return;
+    }
+
+    try {
+        getConnection();
+        con.setAutoCommit(false);
+
+        // Create a new order record
+        String sql = "INSERT INTO ordersummary (orderDate, customerId, totalAmount) VALUES (GETDATE(), ?, 0)";
+        PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        pstmt.setString(1, customerId);
+        pstmt.executeUpdate();
+
+        // Get the orderId
+        ResultSet keys = pstmt.getGeneratedKeys();
+        keys.next();
+        int orderId = keys.getInt(1);
+
+        // Insert each item into OrderProduct
+        double total = 0;
+        sql = "INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (?, ?, ?, ?)";
+        pstmt = con.prepareStatement(sql);
+
+        for (String productId : productList.keySet()) {
+            ArrayList<Object> product = productList.get(productId);
+            double price = Double.parseDouble(product.get(2).toString());
+            int quantity = Integer.parseInt(product.get(3).toString());
+            double subtotal = price * quantity;
+            total += subtotal;
+
+            pstmt.setInt(1, orderId);
+            pstmt.setString(2, productId);
+            pstmt.setInt(3, quantity);
+            pstmt.setDouble(4, price);
             pstmt.executeUpdate();
-            ResultSet keys = pstmt.getGeneratedKeys();
-            keys.next();
-            orderId = keys.getInt(1);
         }
 
-        double totalAmount = 0;
+        // Update total amount for order
+        sql = "UPDATE ordersummary SET totalAmount = ? WHERE orderId = ?";
+        pstmt = con.prepareStatement(sql);
+        pstmt.setDouble(1, total);
+        pstmt.setInt(2, orderId);
+        pstmt.executeUpdate();
 
-        String insertProduct = "INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement pstmt = con.prepareStatement(insertProduct)) {
-            for (Map.Entry<String, ArrayList<Object>> entry : productList.entrySet()) {
-                ArrayList<Object> product = entry.getValue();
-                String productId = (String) product.get(0);
-                String price = (String) product.get(2);
-                double pr = Double.parseDouble(price);
-                int qty = ((Integer) product.get(3)).intValue();
+        // Save shipping info
+        sql = "UPDATE ordersummary SET shiptoAddress=?, shiptoCity=?, shiptoState=?, shiptoPostalCode=?, shiptoCountry=? WHERE orderId=?";
+        pstmt = con.prepareStatement(sql);
+        pstmt.setString(1, request.getParameter("address"));
+        pstmt.setString(2, request.getParameter("city"));
+        pstmt.setString(3, request.getParameter("state"));
+        pstmt.setString(4, request.getParameter("postalCode"));
+        pstmt.setString(5, request.getParameter("country"));
+        pstmt.setInt(6, orderId);
+        pstmt.executeUpdate();
 
-                pstmt.setInt(1, orderId);
-                pstmt.setString(2, productId);
-                pstmt.setInt(3, qty);
-                pstmt.setDouble(4, pr);
-                pstmt.executeUpdate();
-
-                totalAmount += pr * qty;
-            }
+        // Save payment info (in a real system, this would be handled securely)
+        // Payment method already validated and stored above
+        // In a real system, you would integrate with a payment processor here
+        
+        con.commit();
+        // On successful order completion
+        if (orderId > 0) {
+            session.setAttribute("productList", null);  // Clear cart
+            response.sendRedirect("orderconfirmation.jsp?orderId=" + orderId);  // Redirect to confirmation page
+            return;
         }
 
-        // Update total amount in ordersummary
-        String updateTotal = "UPDATE ordersummary SET totalAmount = ? WHERE orderId = ?";
-        try (PreparedStatement pstmt = con.prepareStatement(updateTotal)) {
-            pstmt.setDouble(1, totalAmount);
-            pstmt.setInt(2, orderId);
-            pstmt.executeUpdate();
-        }
-
-        String showOrder="Select orderId,productId,quantity,price from orderproduct where orderId=?";
-        try (PreparedStatement pstmt=con.prepareStatement(showOrder)){
-            pstmt.setInt(1,orderId);
-            ResultSet resultSet=pstmt.executeQuery();
-            out.println("<h1>Order Summary</h1>");
-            out.println("<table class='order-table'>");
-            out.println("<tr>");
-            out.println("<th>Product Id</th>");
-            out.println("<th>Quantity</th>");
-            out.println("<th>Price</th>");
-            out.println("</tr>");
-            NumberFormat currFormat = NumberFormat.getCurrencyInstance();
-            while (resultSet.next()){
-                out.println("<tr>");
-                out.println("<td>"+resultSet.getInt("productId")+"</td>");
-                out.println("<td>"+resultSet.getInt("quantity")+"</td>");
-                out.println("<td>"+currFormat.format(resultSet.getDouble("price"))+"</td>");
-                out.println("</tr>");
-            }
-            out.println("</table>");
-            out.println("<div class='success-message'><h4>Order completed successfully!</h4></div>");
-        }
-
-        con.commit();  // Commit transaction
-
-
-    } catch (SQLException e) {
-        out.println(e);
+    } catch (SQLException ex) {
+        con.rollback();
+        out.println("<h1>Error processing order: " + ex.getMessage() + "</h1>");
+    } finally {
+        con.setAutoCommit(true);
+        closeConnection();
     }
 %>
 </BODY>
 </HTML>
-
