@@ -1,4 +1,4 @@
-<%@ page import="java.sql.*, java.util.HashMap, java.util.ArrayList" %>
+<%@ page import="java.sql.*, java.util.HashMap, java.util.ArrayList, java.util.Map" %>
 <%@ page import="java.text.NumberFormat" %>
 <%@ page import="java.util.Locale" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
@@ -249,21 +249,49 @@
         // Save payment info (in a real system, this would be handled securely)
         // Payment method already validated and stored above
         // In a real system, you would integrate with a payment processor here
-        
-        con.commit();
-        // On successful order completion
-        if (orderId > 0) {
-            session.setAttribute("productList", null);  // Clear cart
-            response.sendRedirect("orderconfirmation.jsp?orderId=" + orderId);  // Redirect to confirmation page
-            return;
-        }
 
+        // Process order and update inventory
+        try {
+            // Retrieve cart from session
+            @SuppressWarnings("unchecked")
+            HashMap<String, ArrayList<Object>> cartProductList = (HashMap<String, ArrayList<Object>>) session.getAttribute("productList");
+
+            if (cartProductList != null) {
+                for (Map.Entry<String, ArrayList<Object>> entry : cartProductList.entrySet()) {
+                    String productId = entry.getKey();
+                    ArrayList<Object> product = entry.getValue();
+                    int quantity = (Integer) product.get(3);
+
+                    // Update inventory
+                    String updateSql = "UPDATE productinventory SET quantity = quantity - ? WHERE productId = ?";
+                    PreparedStatement updateStmt = con.prepareStatement(updateSql);
+                    updateStmt.setInt(1, quantity);
+                    updateStmt.setString(2, productId);
+                    updateStmt.executeUpdate();
+                }
+            }
+
+            // Commit transaction
+            con.commit();
+            session.setAttribute("productList", null); // Clear cart
+            response.sendRedirect("orderconfirmation.jsp?orderId=" + orderId);
+        } catch (SQLException e) {
+            con.rollback(); // Rollback transaction on error
+            out.println("Error processing order: " + e.getMessage());
+        } finally {
+            if (con != null) {
+                con.setAutoCommit(true);
+                closeConnection();
+            }
+        }
     } catch (SQLException ex) {
         con.rollback();
         out.println("<h1>Error processing order: " + ex.getMessage() + "</h1>");
     } finally {
-        con.setAutoCommit(true);
-        closeConnection();
+        if (con != null) {
+            con.setAutoCommit(true);
+            closeConnection();
+        }
     }
 %>
 </BODY>

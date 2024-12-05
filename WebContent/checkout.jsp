@@ -1,4 +1,6 @@
 <%@ page import="java.sql.*" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ include file="jdbc.jsp" %>
 <!DOCTYPE html>
 <html>
@@ -97,6 +99,16 @@
     // Check if user is logged in
     if (userName == null || userName.isEmpty()) {
         response.sendRedirect("login.jsp");
+        return;
+    }
+
+    // Check if cart is empty
+    @SuppressWarnings("unchecked")
+    HashMap<String, ArrayList<Object>> productList = (HashMap<String, ArrayList<Object>>) session.getAttribute("productList");
+    
+    if (productList == null || productList.isEmpty()) {
+        session.setAttribute("errorMessage", "Your cart is empty. Please add items to your cart before proceeding to checkout.");
+        response.sendRedirect("showcart.jsp");
         return;
     }
 

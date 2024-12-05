@@ -37,7 +37,7 @@
 
 <div class="header">
     <div class="header-content">
-        <a href="index.jsp" class="store-name">Ray's Grocery</a>
+        <a href="index.jsp" class="store-name">PS's Grocery</a>
         <div class="nav-links">
             <a href="listprod.jsp">Shop</a>
             <a href="listorder.jsp">Orders</a>
