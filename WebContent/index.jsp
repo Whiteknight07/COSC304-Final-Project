@@ -146,7 +146,7 @@
 <%@ include file="header.jsp" %>
 
 <div class="hero-section">
-    <h1>Welcome to YOUR NAME Grocery</h1>
+    <h1>Welcome to PS Grocery</h1>
     <p>Fresh, Quality Products Delivered to Your Door</p>
     <a href="listprod.jsp" class="cta-button">Start Shopping</a>
 </div>
