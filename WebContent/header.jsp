@@ -55,7 +55,6 @@
             <% if (userName != null && !userName.isEmpty()) { %>
                 <div class="welcome-message">Welcome <%= userName %></div>
             <% } %>
-            <div class="current-time">The current local time is: <%= new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(new java.util.Date()) %></div>
         </div>
         <div class="nav-links">
             <a href="listprod.jsp">Shop</a>
