@@ -33,11 +33,30 @@
     .nav-links a:hover {
         color: #3399FF;
     }
+    .welcome-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .welcome-message {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    .current-time {
+        font-size: 14px;
+        color: #666;
+    }
 </style>
 
 <div class="header">
     <div class="header-content">
-        <a href="index.jsp" class="store-name">TechTrove</a>
+        <div class="welcome-section">
+            <a href="index.jsp" class="store-name">TechTrove</a>
+            <% if (userName != null && !userName.isEmpty()) { %>
+                <div class="welcome-message">Welcome <%= userName %></div>
+            <% } %>
+            <div class="current-time">The current local time is: <%= new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(new java.util.Date()) %></div>
+        </div>
         <div class="nav-links">
             <a href="listprod.jsp">Shop</a>
             <a href="listorder.jsp">Orders</a>
