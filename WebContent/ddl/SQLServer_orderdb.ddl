@@ -143,56 +143,123 @@ CREATE TABLE review (
         ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-INSERT INTO category(categoryName) VALUES ('Beverages');
-INSERT INTO category(categoryName) VALUES ('Condiments');
-INSERT INTO category(categoryName) VALUES ('Dairy Products');
-INSERT INTO category(categoryName) VALUES ('Produce');
-INSERT INTO category(categoryName) VALUES ('Meat/Poultry');
-INSERT INTO category(categoryName) VALUES ('Seafood');
-INSERT INTO category(categoryName) VALUES ('Confections');
-INSERT INTO category(categoryName) VALUES ('Grains/Cereals');
+INSERT INTO category(categoryName) VALUES ('Smartphones');
+INSERT INTO category(categoryName) VALUES ('Laptops');
+INSERT INTO category(categoryName) VALUES ('Audio Devices');
+INSERT INTO category(categoryName) VALUES ('Gaming');
+INSERT INTO category(categoryName) VALUES ('Smart Home');
+INSERT INTO category(categoryName) VALUES ('Accessories');
 
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Chai', 1, '10 boxes x 20 bags',18.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Chang',1,'24 - 12 oz bottles',19.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Aniseed Syrup',2,'12 - 550 ml bottles',10.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Chef Anton''s Cajun Seasoning',2,'48 - 6 oz jars',22.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Chef Anton''s Gumbo Mix',2,'36 boxes',21.35);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Grandma''s Boysenberry Spread',2,'12 - 8 oz jars',25.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Uncle Bob''s Organic Dried Pears',4,'12 - 1 lb pkgs.',30.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Northwoods Cranberry Sauce',2,'12 - 12 oz jars',40.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Mishi Kobe Niku',5,'18 - 500 g pkgs.',97.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Ikura',6,'12 - 200 ml jars',31.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Queso Cabrales',3,'1 kg pkg.',21.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Queso Manchego La Pastora',3,'10 - 500 g pkgs.',38.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Tofu',4,'40 - 100 g pkgs.',23.25);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Genen Shouyu',2,'24 - 250 ml bottles',15.50);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Pavlova',7,'32 - 500 g boxes',17.45);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Alice Mutton',5,'20 - 1 kg tins',39.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Carnarvon Tigers',6,'16 kg pkg.',62.50);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Teatime Chocolate Biscuits',7,'10 boxes x 12 pieces',9.20);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Sir Rodney''s Marmalade',7,'30 gift boxes',81.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Sir Rodney''s Scones',7,'24 pkgs. x 4 pieces',10.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Gustaf''s Knackebread',8,'24 - 500 g pkgs.',21.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Sasquatch Ale',1,'24 - 12 oz bottles',14.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Steeleye Stout',1,'24 - 12 oz bottles',18.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Inlagd Sill',6,'24 - 250 g  jars',19.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Boston Crab Meat',6,'24 - 4 oz tins',18.40);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Jack''s New England Clam Chowder',6,'12 - 12 oz cans',9.65);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Singaporean Hokkien Fried Mee',8,'32 - 1 kg pkgs.',14.00);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Louisiana Fiery Hot Pepper Sauce',2,'32 - 8 oz bottles',21.05);
-INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Laughing Lumberjack Lager',1,'24 - 12 oz bottles',14.00);
+-- Smartphones
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('iPhone 14 Pro', 1, '256GB, Space Black', 1099.00);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Samsung Galaxy S23', 1, '128GB, Phantom Black', 799.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Google Pixel 7 Pro', 1, '256GB, Hazel', 899.00);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('OnePlus 11', 1, '256GB, Titan Black', 699.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('iPhone 14', 1, '128GB, Midnight', 799.00);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Samsung Galaxy Z Fold 4', 1, '512GB, Phantom Black', 1799.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Xiaomi 13 Pro', 1, '256GB, Ceramic Black', 899.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Nothing Phone 1', 1, '128GB, Black', 449.99);
 
+-- Laptops
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('MacBook Pro M2', 2, '14-inch, 512GB SSD', 1999.00);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Dell XPS 15', 2, '32GB RAM, 1TB SSD', 2199.00);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Lenovo ThinkPad X1 Carbon', 2, '16GB RAM, 512GB SSD', 1599.00);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('HP Spectre x360', 2, '16GB RAM, 1TB SSD', 1499.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('ASUS ROG Zephyrus G14', 2, 'AMD Ryzen 9, RTX 4090', 1999.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('MacBook Air M2', 2, '13-inch, 256GB SSD', 1199.00);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Razer Blade 15', 2, '32GB RAM, RTX 4080', 2499.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Microsoft Surface Laptop 5', 2, '13.5-inch, 512GB SSD', 1299.99);
+
+-- Audio Devices
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('AirPods Pro', 3, '2nd Generation with Case', 249.00);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Sony WH-1000XM5', 3, 'Wireless Noise Cancelling', 399.00);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Bose QuietComfort 45', 3, 'Wireless Noise Cancelling', 329.00);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Samsung Galaxy Buds2 Pro', 3, 'Wireless Earbuds, Black', 229.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Sennheiser Momentum 4', 3, 'Wireless ANC Headphones', 379.95);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Beats Studio Buds', 3, 'True Wireless Earbuds', 149.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Jabra Elite 7 Pro', 3, 'True Wireless Earbuds', 199.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Sony LinkBuds S', 3, 'Lightweight Wireless Earbuds', 199.99);
+
+-- Gaming
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('PS5', 4, 'Digital Edition', 399.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Xbox Series X', 4, '1TB Storage', 499.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Nintendo Switch OLED', 4, 'White Joy-Cons', 349.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Steam Deck', 4, '512GB NVMe SSD', 649.00);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('PS5 DualSense Controller', 4, 'Wireless Controller, White', 69.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Xbox Elite Controller', 4, 'Series 2 Wireless', 179.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Nintendo Pro Controller', 4, 'Wireless Controller', 69.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Logitech G Pro X', 4, 'Wireless Gaming Headset', 199.99);
+
+-- Smart Home
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Amazon Echo', 5, '4th Generation Smart Speaker', 99.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Nest Thermostat', 5, 'Smart Home Temperature Control', 249.00);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Ring Video Doorbell', 5, 'Pro 2 with HD Video', 249.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Philips Hue Starter Kit', 5, '3 Color Bulbs + Bridge', 199.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Google Nest Cam', 5, 'Indoor Security Camera', 179.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('August Smart Lock', 5, 'Pro + Connect Bridge', 279.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Ecobee SmartCamera', 5, 'with Voice Control', 169.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('TP-Link Kasa Smart Plug', 5, '4-Pack WiFi Outlets', 39.99);
+
+-- Accessories
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Apple Watch Band', 6, 'Sport Loop, Multiple Colors', 49.00);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Samsung 45W Charger', 6, 'Fast Charging Adapter', 39.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Anker Power Bank', 6, '26800mAh Portable Charger', 69.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('PopSocket Phone Grip', 6, 'Customizable Designs', 14.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Apple AirTag', 6, 'Item Tracker', 29.00);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Spigen Phone Case', 6, 'Various Models Available', 19.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('Screen Protector Pack', 6, 'Tempered Glass 3-Pack', 24.99);
+INSERT product(productName, categoryId, productDesc, productPrice) VALUES ('USB-C Cable Bundle', 6, '3-Pack Braided Cables', 29.99);
+
+-- Update warehouse inventory with some sample quantities
 INSERT INTO warehouse(warehouseName) VALUES ('Main warehouse');
-INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (1, 1, 5, 18);
-INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (2, 1, 10, 19);
-INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (3, 1, 3, 10);
-INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (4, 1, 2, 22);
-INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (5, 1, 6, 21.35);
-INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (6, 1, 3, 25);
-INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (7, 1, 1, 30);
-INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (8, 1, 0, 40);
-INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (9, 1, 2, 97);
-INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (10, 1, 3, 31);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (1, 1, 5, 1099);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (2, 1, 10, 799.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (3, 1, 3, 1999);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (4, 1, 2, 2199);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (5, 1, 6, 249);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (6, 1, 3, 399);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (7, 1, 1, 399.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (8, 1, 0, 499.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (9, 1, 2, 99.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (10, 1, 3, 249);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (11, 1, 1, 1099);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (12, 1, 2, 799.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (13, 1, 3, 1999);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (14, 1, 4, 2199);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (15, 1, 5, 249);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (16, 1, 6, 399);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (17, 1, 7, 399.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (18, 1, 8, 499.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (19, 1, 9, 99.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (20, 1, 10, 249);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (21, 1, 11, 1099);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (22, 1, 12, 799.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (23, 1, 13, 1999);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (24, 1, 14, 2199);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (25, 1, 15, 249);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (26, 1, 16, 399);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (27, 1, 17, 399.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (28, 1, 18, 499.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (29, 1, 19, 99.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (30, 1, 20, 249);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (31, 1, 21, 1099);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (32, 1, 22, 799.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (33, 1, 23, 1999);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (34, 1, 24, 2199);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (35, 1, 25, 249);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (36, 1, 26, 399);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (37, 1, 27, 399.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (38, 1, 28, 499.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (39, 1, 29, 99.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (40, 1, 30, 249);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (41, 1, 31, 1099);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (42, 1, 32, 799.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (43, 1, 33, 1999);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (44, 1, 34, 2199);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (45, 1, 35, 249);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (46, 1, 36, 399);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (47, 1, 37, 399.99);
+INSERT INTO productInventory(productId, warehouseId, quantity, price) VALUES (48, 1, 38, 499.99);
 
 INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Arnold', 'Anderson', 'a.anderson@gmail.com', '204-111-2222', '103 AnyWhere Street', 'Winnipeg', 'MB', 'R3X 45T', 'Canada', 'arnold' , '304Arnold!');
 INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state, postalCode, country, userid, password) VALUES ('Bobby', 'Brown', 'bobby.brown@hotmail.ca', '572-342-8911', '222 Bush Avenue', 'Boston', 'MA', '22222', 'United States', 'bobby' , '304Bobby!');
@@ -202,35 +269,26 @@ INSERT INTO customer (firstName, lastName, email, phonenum, address, city, state
 
 -- Order 1 can be shipped as have enough inventory
 DECLARE @orderId int
-INSERT INTO ordersummary (customerId, orderDate, totalAmount) VALUES (1, '2019-10-15 10:25:55', 91.70)
+INSERT INTO ordersummary (customerId, orderDate, totalAmount) VALUES (1, '2019-10-15 10:25:55', 1099.00)
 SELECT @orderId = @@IDENTITY
-INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 1, 1, 18)
-INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 5, 2, 21.35)
-INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 10, 1, 31);
+INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 1, 1, 1099.00);
 
-INSERT INTO ordersummary (customerId, orderDate, totalAmount) VALUES (2, '2019-10-16 18:00:00', 106.75)
+INSERT INTO ordersummary (customerId, orderDate, totalAmount) VALUES (2, '2019-10-16 18:00:00', 799.99)
 SELECT @orderId = @@IDENTITY
-INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 5, 5, 21.35);
+INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 2, 1, 799.99);
 
 -- Order 3 cannot be shipped as do not have enough inventory for item 7
-INSERT INTO ordersummary (customerId, orderDate, totalAmount) VALUES (3, '2019-10-15 3:30:22', 140)
+INSERT INTO ordersummary (customerId, orderDate, totalAmount) VALUES (3, '2019-10-15 3:30:22', 399.99)
 SELECT @orderId = @@IDENTITY
-INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 6, 2, 25)
-INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 7, 3, 30);
+INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 7, 1, 399.99);
 
-INSERT INTO ordersummary (customerId, orderDate, totalAmount) VALUES (2, '2019-10-17 05:45:11', 327.85)
+INSERT INTO ordersummary (customerId, orderDate, totalAmount) VALUES (2, '2019-10-17 05:45:11', 499.99)
 SELECT @orderId = @@IDENTITY
-INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 3, 4, 10)
-INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 8, 3, 40)
-INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 13, 3, 23.25)
-INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 28, 2, 21.05)
-INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 29, 4, 14);
+INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 8, 1, 499.99);
 
-INSERT INTO ordersummary (customerId, orderDate, totalAmount) VALUES (5, '2019-10-15 10:25:55', 277.40)
+INSERT INTO ordersummary (customerId, orderDate, totalAmount) VALUES (5, '2019-10-15 10:25:55', 99.99)
 SELECT @orderId = @@IDENTITY
-INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 5, 4, 21.35)
-INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 19, 2, 81)
-INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 20, 3, 10);
+INSERT INTO orderproduct (orderId, productId, quantity, price) VALUES (@orderId, 9, 1, 99.99);
 
 -- New SQL DDL for lab 8
 UPDATE Product SET productImageURL = 'img/1.jpg' WHERE ProductId = 1;

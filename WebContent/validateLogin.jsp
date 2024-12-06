@@ -66,3 +66,23 @@
 	}
 %>
 
+					out.println("<!-- Debug: User not found: " + username + " -->");
+				}
+				userCheck.close();
+			}
+			
+			rs.close();
+			pstmt.close();
+		} 
+		catch (SQLException ex) {
+			session.setAttribute("loginMessage", "Database error: " + ex.getMessage());
+			out.println("<!-- Debug: SQL Error: " + ex.getMessage() + " -->");
+		}
+		finally
+		{
+			closeConnection();
+		}	
+		
+		return retStr;
+	}
+%>

@@ -15,7 +15,7 @@ out/
 # Logs and databases
 *.log
 *.sqlite
-
+!WEB-INF/lib/mssql-jdbc-11.2.0.jre11.jar
 # OS generated files
 .DS_Store
 .DS_Store?
