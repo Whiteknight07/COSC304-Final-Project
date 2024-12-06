@@ -121,6 +121,78 @@
             font-size: 16px;
             box-shadow: 0 2px 4px rgba(220, 53, 69, 0.1);
         }
+        .review-section {
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .review-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .rating-input, .review-input {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .submit-review {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .submit-review:hover {
+            background-color: #218838;
+        }
+        .reviews-display {
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .review-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: #666;
+        }
+        .review-rating {
+            color: #ffc107;
+        }
+        .review-text {
+            line-height: 1.5;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .alert-warning {
+            color: #856404;
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+        }
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
     </style>
     <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -249,8 +321,155 @@ if (productId == null || productId.trim().isEmpty()) {
     }
 }
 %>
+
+<!-- Review Form -->
+<div class="review-section">
+    <h3>Write a Review</h3>
+    <%
+    String message = request.getParameter("message");
+    if (message != null) {
+        if (message.equals("already_reviewed")) {
+            %><div class="alert alert-warning">You have already reviewed this product.</div><%
+        } else if (message.equals("not_purchased")) {
+            %><div class="alert alert-warning">You can only review products you have purchased.</div><%
+        } else if (message.equals("review_success")) {
+            %><div class="alert alert-success">Thank you for your review!</div><%
+        } else if (message.equals("user_error")) {
+            %><div class="alert alert-danger">There was an error with your user account.</div><%
+        } else if (message.equals("error")) {
+            String details = request.getParameter("details");
+            %><div class="alert alert-danger">Error submitting review: <%= details != null ? details : "Unknown error" %></div><%
+        }
+    }
+
+    if (session.getAttribute("authenticatedUser") != null) {
+        Connection con2 = null;
+        PreparedStatement custStmt = null;
+        PreparedStatement reviewCheckStmt = null;
+        PreparedStatement purchaseStmt = null;
+        ResultSet custRs = null;
+        ResultSet reviewCheckRs = null;
+        ResultSet purchaseRs = null;
+
+        try {
+            con2 = DriverManager.getConnection(url, uid, pw);
+            String userId = session.getAttribute("authenticatedUser").toString();
+            
+            // Get customer ID
+            String customerQuery = "SELECT customerId FROM customer WHERE userid = ?";
+            custStmt = con2.prepareStatement(customerQuery);
+            custStmt.setString(1, userId);
+            custRs = custStmt.executeQuery();
+            
+            if (custRs.next()) {
+                int customerId = custRs.getInt("customerId");
+                
+                // Check for existing review
+                String reviewCheckQuery = "SELECT reviewId FROM review WHERE customerId = ? AND productId = ?";
+                reviewCheckStmt = con2.prepareStatement(reviewCheckQuery);
+                reviewCheckStmt.setInt(1, customerId);
+                reviewCheckStmt.setInt(2, Integer.parseInt(productId));
+                reviewCheckRs = reviewCheckStmt.executeQuery();
+                
+                if (!reviewCheckRs.next()) {
+                    // Check if purchased
+                    String purchaseQuery = "SELECT op.orderId FROM orderproduct op " +
+                                       "JOIN ordersummary os ON op.orderId = os.orderId " +
+                                       "WHERE os.customerId = ? AND op.productId = ?";
+                    purchaseStmt = con2.prepareStatement(purchaseQuery);
+                    purchaseStmt.setInt(1, customerId);
+                    purchaseStmt.setInt(2, Integer.parseInt(productId));
+                    purchaseRs = purchaseStmt.executeQuery();
+                    
+                    if (purchaseRs.next()) {
+                        // Show review form only if user has purchased and not reviewed
+                        %>
+                        <form action="submitReview.jsp" method="POST" class="review-form">
+                            <input type="hidden" name="productId" value="<%= productId %>">
+                            <div class="rating-input">
+                                <label>Rating:</label>
+                                <select name="rating" required>
+                                    <option value="5">5 - Excellent</option>
+                                    <option value="4">4 - Very Good</option>
+                                    <option value="3">3 - Good</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="1">1 - Poor</option>
+                                </select>
+                            </div>
+                            <div class="review-input">
+                                <label>Your Review:</label>
+                                <textarea name="reviewText" required rows="4" cols="50"></textarea>
+                            </div>
+                            <button type="submit" class="submit-review">Submit Review</button>
+                        </form>
+                        <%
+                    } else {
+                        %><p>You can only review products you have purchased.</p><%
+                    }
+                } else {
+                    %><p>You have already reviewed this product.</p><%
+                }
+            }
+        } catch (SQLException ex) {
+            %><p>Error checking purchase history: <%= ex.getMessage() %></p><%
+        } finally {
+            try {
+                if (custRs != null) custRs.close();
+                if (reviewCheckRs != null) reviewCheckRs.close();
+                if (purchaseRs != null) purchaseRs.close();
+                if (custStmt != null) custStmt.close();
+                if (reviewCheckStmt != null) reviewCheckStmt.close();
+                if (purchaseStmt != null) purchaseStmt.close();
+                if (con2 != null) con2.close();
+            } catch (SQLException ex) {
+                %><p>Error closing database resources: <%= ex.getMessage() %></p><%
+            }
+        }
+    } else {
+        %><p>Please <a href="login.jsp">login</a> to write a review.</p><%
+    }
+    %>
+</div>
+
+<!-- Display Reviews -->
+<div class="reviews-display">
+    <h3>Customer Reviews</h3>
+    <%
+    try {
+        getConnection();
+        String reviewSql = "SELECT r.*, c.firstName, c.lastName FROM review r JOIN customer c ON r.customerId = c.customerId WHERE r.productId = ? ORDER BY r.reviewDate DESC";
+        PreparedStatement reviewStmt = con.prepareStatement(reviewSql);
+        reviewStmt.setInt(1, Integer.parseInt(productId));
+        ResultSet reviewRs = reviewStmt.executeQuery();
+
+        while (reviewRs.next()) {
+            %>
+            <div class="review-item">
+                <div class="review-header">
+                    <span class="review-rating">
+                        <% for(int i = 0; i < reviewRs.getInt("reviewRating"); i++) { %>★<% } %>
+                        <% for(int i = reviewRs.getInt("reviewRating"); i < 5; i++) { %>☆<% } %>
+                    </span>
+                    <span class="review-author">by <%= reviewRs.getString("firstName") %> <%= reviewRs.getString("lastName") %></span>
+                    <span class="review-date"><%= reviewRs.getTimestamp("reviewDate") %></span>
+                </div>
+                <div class="review-text">
+                    <%= reviewRs.getString("reviewComment") %>
+                </div>
+            </div>
+            <%
+        }
+        reviewRs.close();
+        reviewStmt.close();
+    } catch (SQLException ex) {
+        out.println("Failed to load reviews: " + ex.getMessage());
+    } finally {
+        closeConnection();
+    }
+    %>
+</div>
+
 </div>
 
 </body>
 </html>
-
