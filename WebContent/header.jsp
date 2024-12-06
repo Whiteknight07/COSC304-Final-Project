@@ -46,9 +46,7 @@
             <% if (userName != null && !userName.isEmpty()) { %>
                 <a href="customer.jsp">Account Page</a>
                 <a href="editAccount.jsp">Edit Account</a>
-                <% if (userName.equals("admin")) { %>
-                    <a href="admin.jsp">Admin Portal</a>
-                <% } %>
+                 <a href="admin.jsp">Admin Portal</a>
                 <a href="logout.jsp">Logout</a>
             <% } else { %>
                 <a href="login.jsp">Login</a>
