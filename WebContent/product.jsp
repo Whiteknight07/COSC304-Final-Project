@@ -254,10 +254,7 @@ if (productId == null || productId.trim().isEmpty()) {
             <img src="<%= productImage %>" alt="Product Image" />
             <img src="<%= "displayImage.jsp?id="+productId %>"/>
             
-            <div class="info-row">
-                <span class="label">Product ID:</span>
-                <span class="value"><%= productId %></span>
-            </div>
+        
             
             <div class="info-row">
                 <span class="label">Price:</span>
