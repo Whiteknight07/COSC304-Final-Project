@@ -78,8 +78,54 @@
 			text-decoration: none;
 			border-radius: 3px;
 		}
+		
 		.add-button:hover {
 			background-color: #2979cc;
+		}
+
+		.review-button {
+			float: right;
+			background-color: #2ecc71;
+			color: white;
+			padding: 5px 10px;
+			text-decoration: none;
+			border-radius: 3px;
+			margin-right: 15px;
+		}
+		
+		.review-button:hover {
+			background-color: #27ae60;
+		}
+		.btn {
+			display: inline-block;
+			font-weight: 400;
+			text-align: center;
+			vertical-align: middle;
+			cursor: pointer;
+			border: 1px solid transparent;
+			padding: 0.375rem 0.75rem;
+			font-size: 1rem;
+			line-height: 1.5;
+			border-radius: 0.25rem;
+			transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		}
+		.btn-primary {
+			color: #fff;
+			background-color: #007bff;
+			border-color: #007bff;
+		}
+		.btn-secondary {
+			color: #fff;
+			background-color: #6c757d;
+			border-color: #6c757d;
+		}
+		.btn-primary:hover {
+			background-color: #0069d9;
+			border-color: #0062cc;
+		}
+		.btn-secondary:hover {
+			background-color: #5a6268;
+			border-color: #545b62;
 		}
 	</style>
 </head>
@@ -151,6 +197,7 @@
 					out.println("<a href='addcart.jsp?id=" + productId + 
 							"&name=" + URLEncoder.encode(productName, StandardCharsets.UTF_8) + 
 							"&price=" + productPrice + "' class='add-button'>Add to Cart</a>");
+					out.println("<a href='product.jsp?id=" + productId + "' class='review-button'>Review</a>");
 					out.println("<a href='product.jsp?id=" + productId + "' class='product-name'>" + 
 							productName + "</a>");
 					out.println("<br>Price: $" + productPrice);
