@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOUR NAME Grocery - Welcome</title>
+    <title>TechTrove - Your Premium Electronics Store</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -14,7 +14,7 @@
         }
 
         .hero-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/grocery-hero.jpg');
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('img/tech-hero.jpg');
             background-size: cover;
             background-position: center;
             color: white;
@@ -36,7 +36,7 @@
         .cta-button {
             display: inline-block;
             padding: 15px 30px;
-            background-color: #28a745;
+            background-color: #3399FF;
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -45,193 +45,149 @@
         }
 
         .cta-button:hover {
-            background-color: #218838;
+            background-color: #2980b9;
+            color: white;
+            text-decoration: none;
         }
 
         .features-section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
+            padding: 50px 20px;
+            background-color: white;
+            margin-bottom: 40px;
+        }
+
+        .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .feature-card {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             text-align: center;
-            transition: transform 0.3s;
+            padding: 20px;
         }
 
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
+        .feature-card i {
             font-size: 2.5em;
-            color: #28a745;
-            margin-bottom: 20px;
-        }
-
-        .feature-card h3 {
-            color: #333;
+            color: #3399FF;
             margin-bottom: 15px;
         }
 
-        .feature-card p {
-            color: #666;
-            line-height: 1.6;
-        }
-
         .categories-section {
+            padding: 50px 20px;
             max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .categories-section h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
+            margin: 0 auto;
         }
 
         .category-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
+            margin-top: 30px;
         }
 
         .category-card {
-            background: white;
+            background-color: white;
+            border-radius: 10px;
             padding: 20px;
-            border-radius: 8px;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-decoration: none;
+            color: #333;
             transition: transform 0.3s;
-            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .category-card:hover {
             transform: translateY(-5px);
+            text-decoration: none;
+            color: #3399FF;
         }
 
         .category-icon {
             font-size: 2em;
-            color: #28a745;
             margin-bottom: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .hero-section {
-                padding: 60px 20px;
-            }
-
-            .hero-section h1 {
-                font-size: 2em;
-            }
-
-            .features-section {
-                grid-template-columns: 1fr;
-            }
+            color: #3399FF;
         }
     </style>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
+    <%@ include file="header.jsp" %>
 
-<%@ include file="header.jsp" %>
+    <div class="hero-section">
+        <h1>Welcome to TechTrove</h1>
+        <p>Discover the Latest in Technology - Your One-Stop Electronics Shop</p>
+        <a href="listprod.jsp" class="cta-button">Shop Now</a>
+    </div>
 
-<div class="hero-section">
-    <h1>Welcome to PS Grocery</h1>
-    <p>Fresh, Quality Products Delivered to Your Door</p>
-    <a href="listprod.jsp" class="cta-button">Start Shopping</a>
-</div>
-
-<section class="features-section">
-    <div class="feature-card">
-        <div class="feature-icon">
-            <i class="fas fa-truck"></i>
+    <section class="features-section">
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-shipping-fast"></i>
+                <h3>Fast Shipping</h3>
+                <p>Free delivery on orders over $500</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Secure Shopping</h3>
+                <p>100% secure payment processing</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-headset"></i>
+                <h3>24/7 Support</h3>
+                <p>Expert assistance whenever you need</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-undo"></i>
+                <h3>Easy Returns</h3>
+                <p>30-day return policy</p>
+            </div>
         </div>
-        <h3>Fast Delivery</h3>
-        <p>Get your groceries delivered right to your doorstep with our quick and reliable delivery service.</p>
-    </div>
-    <div class="feature-card">
-        <div class="feature-icon">
-            <i class="fas fa-leaf"></i>
+    </section>
+
+    <section class="categories-section">
+        <h2>Shop by Category</h2>
+        <div class="category-grid">
+            <a href="listprod.jsp?category=Smartphones" class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Smartphones</h3>
+            </a>
+            <a href="listprod.jsp?category=Laptops" class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-laptop"></i>
+                </div>
+                <h3>Laptops</h3>
+            </a>
+            <a href="listprod.jsp?category=Audio" class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-headphones"></i>
+                </div>
+                <h3>Audio Devices</h3>
+            </a>
+            <a href="listprod.jsp?category=Gaming" class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <h3>Gaming</h3>
+            </a>
+            <a href="listprod.jsp?category=Smart+Home" class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <h3>Smart Home</h3>
+            </a>
+            <a href="listprod.jsp?category=Accessories" class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-plug"></i>
+                </div>
+                <h3>Accessories</h3>
+            </a>
         </div>
-        <h3>Fresh Products</h3>
-        <p>We source the freshest products directly from local farmers and suppliers.</p>
-    </div>
-    <div class="feature-card">
-        <div class="feature-icon">
-            <i class="fas fa-tag"></i>
-        </div>
-        <h3>Best Prices</h3>
-        <p>Enjoy competitive prices and regular deals on your favorite products.</p>
-    </div>
-</section>
-
-<section class="categories-section">
-    <h2>Shop by Category</h2>
-    <div class="category-grid">
-        <a href="listprod.jsp" class="category-card">
-            <div class="category-icon">
-                <i class="fas fa-apple-alt"></i>
-            </div>
-            <h3>Produce</h3>
-        </a>
-        <a href="listprod.jsp" class="category-card">
-            <div class="category-icon">
-                <i class="fas fa-cheese"></i>
-            </div>
-            <h3>Dairy</h3>
-        </a>
-        <a href="listprod.jsp" class="category-card">
-            <div class="category-icon">
-                <i class="fas fa-bread-slice"></i>
-            </div>
-            <h3>Bakery</h3>
-        </a>
-        <a href="listprod.jsp" class="category-card">
-            <div class="category-icon">
-                <i class="fas fa-drumstick-bite"></i>
-            </div>
-            <h3>Meat</h3>
-        </a>
-    </div>
-</section>
-
-<script>
-// Simple animation for feature cards on scroll
-document.addEventListener('DOMContentLoaded', function() {
-    const cards = document.querySelectorAll('.feature-card');
-    
-    function checkScroll() {
-        cards.forEach(card => {
-            const cardTop = card.getBoundingClientRect().top;
-            if (cardTop < window.innerHeight * 0.8) {
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }
-        });
-    }
-
-    // Initial styles
-    cards.forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    });
-
-    // Check on load and scroll
-    checkScroll();
-    window.addEventListener('scroll', checkScroll);
-});
-</script>
+    </section>
 
 </body>
 </html>
